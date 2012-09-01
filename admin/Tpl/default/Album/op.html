@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <link href="../Public/css/main.css" rel="stylesheet" type="text/css">
+        <script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+    </head>
+    <body>
+        <div class="all">
+            <table class="album_table">
+                <tr>
+                    <td class="title">图片操作</td>
+                </tr>
+
+                <tr>
+                    <td class="td_right">选择相册
+                        <select id="album" name="album">
+                            <option value="">全部相册</option>
+                            <volist name="ac_list" id="ac_vo">
+                                <if condition="$ac_vo.id eq $classes">
+                                    <option value="{$ac_vo.id}" selected="selected" >{$ac_vo.name}</option>
+                                    <else />
+                                    <option value="{$ac_vo.id}">{$ac_vo.name}</option>
+                                </if>
+                            </volist>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><volist name="list" id="vo">
+
+                    <div class="pic_box">
+                        <a href="__URL__/update/ID/{$vo.id}" title="编辑此图片">{$vo.name}</a>&nbsp;&nbsp;&nbsp;
+                        <a href="__URL__/pic_delete/ID/{$vo.id}" onClick="if(!confirm('确定删除吗？')) return false">删除</a><br/>
+                        <a href="__URL__/update/ID/{$vo.id}" title="编辑此图片"><img src="__PUBLIC__/Pic/m_{$vo.file_name}" /></a><br />
+                    </div>
+                </volist></td>
+                </tr>
+
+                <tr>
+                    <td>{$page}</td>
+                </tr>
+            </table>
+        </div>
+        <script type="text/javascript">
+            $('#album').change(function(){
+                window.location.href='__URL__/op/ID/'+this.value;
+            });
+        </script>
+    </body>
+</html>

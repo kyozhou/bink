@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <link href="../Public/css/main.css" rel="stylesheet" type="text/css">
+        <script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+    </head>
+    <body>
+        <div class="all">
+            <form action="__URL__/advert_delete_batch" method="post" name="del_form">
+                <table>
+                    <tr>
+                        <td colspan="5" class="title">广告管理</td>
+                    </tr>
+					
+                    <tr>
+                        <td width="5%"><input type="checkbox" name="check_all" id="check_all" /></td>
+                        <td width="200">广告名</td>
+                        <td width="50">是否显示</td>
+                        <td>广告链接地址</td>
+                        <td width="200">操作</td>
+                    </tr>
+                    <volist name="list" id="vo">
+                        <tr>
+                            <td><input type="checkbox" name="cb[]" id="cb" value="{$vo.id}" /></td>
+                            <td id="name_{$vo.id}" align="center">{$vo.name}</td>
+                            <td><if condition="$vo.is_show eq 1">显示<else/>不显示</if></td>
+                            <td><empty name="vo.href">/<else/>{$vo.href}</empty></td>
+                            <td>
+                                <input type="button" name="ad_update" id="ad_update" value="更新" title="{$vo.id}" />
+                                <input type="button" id="delete_button" value="删除" onClick="if(!confirm('确定删除吗？')) return false ;window.location.href='__URL__/ad_delete/ID/{$vo.id}';"/>
+                            </td>
+                        </tr>
+                    </volist>
+                    <tr>
+                        <td><input name="sub" type="submit" class="button01" value="×" title="删除所选择"></td>
+                        <td colspan="3"></td>
+                    	<td><input type="button" name="ad_add" id="ad_add" value="新增" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div class="hidden_div" id="hidden_div_add" style="display: none; ">
+            <form action="__URL__/ad_add" method="post" name="form_add" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">新增广告</td>
+                    </tr>
+                    <tr>
+                        <td width="100">广告名*</td>
+                        <td class="td_left"><input type="text" name="name" /></td>
+                    </tr>
+                    <tr>
+                        <td width="100">是否显示*</td>
+                        <td class="td_left"><input type="radio" name="is_show" value="y"/>是||<input type="radio" name="is_show" value="n" checked/>否</td>
+                    </tr>
+                    <tr>
+                    	<td width="100">广告图片*</td>
+                        <td class="td_left"><input type="file" name="my_file" /></td>
+                    </tr>
+                    <tr>
+                        <td width="100">链接地址</td>
+                        <td class="td_left"><input type="text" name="href" style="width:300px;"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value='提交' /><input type="button" value="取消" name="exit"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="hidden_div" id="hidden_div_update" style="display: none;">
+            <form action="__URL__/ad_update" method="post" name="form_update" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">更新广告</td>
+                    </tr>
+                    <tr>
+                        <td width="100">广告名*</td>
+                        <td class="td_left"><input type="text" name="name" id="name_update"/></td>
+                    </tr>
+                    <tr>
+                        <td width="100">是否显示*</td>
+                        <td class="td_left"><input type="radio" name="is_show" id="set_show_0" value="y"/>是||<input type="radio" name="is_show" id="set_show_1" value="n" />否 </td>
+                    </tr>
+                    <tr>
+                    	<td width="100">广告图片*</td>
+                    	<td class="td_left"><input type="file" name="my_file" /><input type="hidden" id="file_name" name="file_name"/></td>
+                    </tr>
+                    <tr>
+                        <td width="100">广告链接</td>
+                        <td class="td_left"><input type="text" name="href" id="href_update" style="width:300px;"/></td>
+                    </tr>
+                    <tr>
+                        <td width="100">广告图预览</td>
+                        <td class="td_left"><img src="" title="广告预览图" alt="广告预览图" id="pic_preview" style="max-width:400px;"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="hidden" name="ad_id" id="ad_id"/><input type="submit" value='提交' /><input type="button" value="取消" name="exit"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <script type="text/javascript">
+            $("#check_all").click(
+            function(){
+                if(this.checked){
+                    $("input[name='cb[]']").each(function(){this.checked=true;});
+                }else{
+                    $("input[name='cb[]']").each(function(){this.checked=false;});
+                }
+            }
+        	);
+            $("#ad_add").click(function(){
+                $("#hidden_div_add").show('fast');
+            });
+
+            $("input[name*='ad_update']").click(function(){
+                id = $(this).attr("title");
+                var _url = '__URL__/get_advert/ID/';
+                var _go = _url + $(this).attr("title");
+                $('#ad_id').val(id);
+                $.getJSON(
+                _go,
+                function(data){
+                    
+                    if(data.name!=""){
+                        $('#name_update').val(data.name);
+                        $("#file_name").val(data.file_name);
+                        $("#href_update").val(data.href);
+                        $("#pic_preview").attr('src','__PUBLIC__/Pic/Advert/'+data.file_name);
+                        if(data.is_show == '1')
+                        {
+                            $('#set_show_0').attr("checked","checked");
+                            $('#set_show_1').removeAttr('checked');
+                        }
+                        else
+                        {
+                            $('#set_show_1').attr('checked','checked');
+                            $('#set_show_0').removeAttr('checked');
+                        }
+                        $("input[name='hidden_update']").val(data.id);//更新ID
+                    }
+                }
+                );
+                $("#hidden_div_update").show('fast');
+            });
+
+            $("input[name*='exit']").click(function(){
+                $("#hidden_div_update").hide('fast');
+                $("#hidden_div_add").hide('fast');
+                $('#name_update').val('');
+                $("#file_name").val('');
+                $('#set_show_1').removeAttr('checked');
+                $('#set_show_0').removeAttr('checked');
+            });
+            
+        </script>
+    </body>
+</html>

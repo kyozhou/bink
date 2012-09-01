@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+        <link type="text/css" href="../Public/css/main.css" rel="stylesheet" />
+        <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    </head>
+    <body>
+        <div class="all">
+            <table>
+                <tr>
+                    <td colspan="8" class="title">菜单类别管理</td>
+                </tr>
+                <tr>
+                    <th width="50">ID</th>
+                    <th>名称</th>
+                    <th width="60">显示</th>
+                    <th width="200">操作</th>
+                </tr>
+                <volist name="menucls" id="vo">
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.isshow}</td>
+                        <td>
+                            <input type="button" name="update" class="show_update" value="更新" onclick="update_menu({$vo.id})"/>
+                            <input type="button" onclick="if(confirm('将删除所有此菜单下的子菜单，确定删除吗？')==false) return false;window.location.href='__URL__/menucls_delete/ID/{$vo.id}'" value="删除" />
+                        </td>
+                    </tr>
+                </volist>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="2">{$page}</td>
+                    <td><input type="button" id="button_add" value="新增" /></td>
+                </tr>
+            </table>
+        </div>
+        <div class="hidden_div">
+            <form id="fm" action="" method="post">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title"><label id='lb'></label></td>
+                    </tr>
+                    <tr>
+                        <td width="20%">名称</td>
+                        <td width="80%" class="td_left"><input name="name" type="text" id="menucls_name"/></td>
+                    </tr>
+                    <tr>
+                        <td>是否显示</td>
+                        <td class="td_left">
+                            <input name="isshow" type="radio" value="Y" checked="checked" /> 是
+                            <input name="isshow" type="radio" value="N"/> 否
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="sb" id="sb" value="提交"/>
+                            <input name="exit" type="button" value="取消" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <script type="text/javascript">
+            function update_menu(id){
+                $.getJSON('__URL__/get_menucls/ID/'+id,function(json){
+                    if(json.error){
+                        alert('错误请求');
+                    }else{
+                        $('#lb').html('更新菜单类别');
+                        $('#fm').attr('action','__URL__/menucls_update/ID/'+json.data.id);
+                        $('#menucls_name').val(json.data.name);
+                        $('input[name=\'isshow\'][value=\''+json.data.isshow+'\']').attr('checked',true);
+                        $('div.hidden_div').slideDown(200);
+                    }
+
+                });
+            }
+            $('#button_add').click(function(){
+                $('#lb').html('新增菜单类别');
+                $('#fm').attr('action','__URL__/menucls_add');
+                $('#menucls_name').val('');
+                $('input[name=\'isshow\'][value=\'Y\']').attr('checked',true);
+                $('div.hidden_div').slideDown(200);
+            });
+            $("input[name*='exit']").click(function(){
+                $(".hidden_div").slideUp(200);
+            });
+        </script>
+    </body>
+
+</html>

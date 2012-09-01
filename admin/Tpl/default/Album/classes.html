@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+        <link type="text/css" rel="stylesheet" rev="stylesheet" href="../Public/css/main.css" media="all" />
+        <script type="text/javascript" src="__PUBLIC__/Js/jquery.blockUI.js"></script>
+    </head>
+    <body>
+        <div class="all">
+            <table>
+                <tr>
+                    <td colspan="3" class="title">相册管理</td>
+                </tr>
+
+                <tr>
+                    <td width="34%">相册类别</td>
+                    <td width="32%">是否锁定</td>
+                    <td width="34%">操作</td>
+                </tr>
+
+                <iterate name="list" id="vo">
+                    <tr id="{$vo.id}">
+                        <td>{$vo.name}</td>
+                        <td><if condition="$vo.is_lock eq 'y'">锁定<else />不锁定</if></td>
+                    <td><input id="hidden" type="hidden" value="{$vo.id}" /><input
+                            type="button" name="update" title="{$vo.id}" class="show_update"
+                            value="更新"><input type="button"
+                            onclick="if(confirm('将同时删除本相册中的所有图片！！确定删除吗？')==false) return false;window.location.href='__URL__/classes_delete/ID/{$vo.id}'" value="删除" /></td>
+                    </tr>
+                </iterate>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><input type="button" name="insert" id="insert" value="新增"></td>
+                </tr>
+
+            </table>
+        </div>
+
+
+        <div class="hidden_div" id="hd_add">
+            <form action="__URL__/classes_add" method="post" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">新建相册</td>
+                    </tr>
+                    <tr>
+                        <td>名称</td>
+                        <td class="td_left"><input name="name" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>锁定</td>
+                        <td class="td_left">
+                            <input name="is_lock" type="radio" id="is_lock_0" value="y">锁定
+                            <input name="is_lock" type="radio" id="is_lock_1" value="n">不锁定
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>描述</td>
+                        <td class="td_left">
+                            <textarea name="describe" id="describe" cols="50" rows="10" ></textarea>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>关键词</td>
+                        <td class="td_left"><input type="text" name="kw" /></td>
+                    </tr>
+                    <tr>
+                        <td>封面图片</td>
+                        <td class="td_left"><input name="my_file" id="my_file_add" type="file" size="50" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="add" id="add" value="新增">
+                            <input name="exit" type="button" value="取消" class="submit_button" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="hidden_div" id="hd_update" >
+            <form action="__URL__/classes_update" method="post" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">类别更新</td>
+                    </tr>
+                    <tr>
+                        <td>名称</td>
+                        <td class="td_left"><input name="name_update" type="text">*</td>
+                    </tr>
+                    <tr>
+                        <td>锁定</td>
+                        <td class="td_left">
+                            <input name="is_lock_update" type="radio" id="is_lock_update_0" value="y">锁定
+                            <input name="is_lock_update" type="radio" id="is_lock_update_1" value="n">不锁定
+                            *
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>描述</td>
+                        <td class="td_left">
+                            <textarea name="describe" id="describe_update" cols="50" rows="10" ></textarea>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>关键词</td>
+                        <td class="td_left"><input type="text" name="kw" id="kw_update" /></td>
+                    </tr>
+                    <tr>
+                        <td>封面图片</td>
+                        <td class="td_left">
+                            <input name="my_file" id="my_file_update" type="file" size="50" />
+                            <label id="cover_pic_update"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input name="hidden_update" id="hidden_update" type="hidden" value="" />
+                            <input type="submit" name="update" id="update" value="更新">
+                            <input name="exit" type="button" value="取消" class="submit_button" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </body>
+    <script type="text/javascript">
+        $(".hidden_div").hide();
+        $(".show_update").click(function(){
+            var _url = '__APP__/Album/get_picturecls/cls_id/';
+            var _go = _url + $(this).attr("title");
+            $.getJSON(
+            _go,
+            function(data){
+                if(data.name!=""){
+                    $('#describe_update').html(data.describe);//描述
+                    $("input[name='name_update']").val(data.name);//相册名
+                    $("#kw_update").val(data.keywords);
+                    $("#cover_pic_update").html(data.cover_pic);
+                    if(data.is_lock == 'y')
+                    {
+                        $('#is_lock_update_0').attr("checked","checked");
+                        $('#is_lock_update_1').removeAttr('checked');
+                    }
+                    else
+                    {
+                        $('#is_lock_update_1').attr('checked','checked');
+                        $('#is_lock_update_0').removeAttr('checked');
+                    }
+                    $("input[name='hidden_update']").val(data.id);//更新ID
+                }
+            }
+        );
+            $('#hd_update').show('fast');
+        });
+        $('#insert').click(function(){
+            $('#hd_add').show('fast');
+        });
+        $("input[name*='exit']").click(function(){
+            $('#describe_update').html('');//描述
+            $("input[name='name_update']").val('');//相册名
+            $("#kw_update").val('');
+            $("#cover_pic_update").html('');
+            $(".hidden_div").hide('fast');
+            $(".add_div").hide('fast');
+        });
+
+        $('.submit_button').click(function(){
+            $.blockUI({message: '<h1><img src="__PUBLIC__/Img/loading.gif" /> 请稍等...</h1>'});
+        });
+    </script>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<link href="../Public/css/main.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+</head>
+<body>
+<div class="all">
+<table>
+	<tr>
+		<td colspan="3" class="title">上传文件操作</td>
+	</tr>
+	<tr>
+		<td colspan="3" class="td_right">文件类别 <select name="classes"
+			id="classes">
+			<option>---全部---</option>
+			<volist name="classes_list" id="classes_vo">
+			<if condition="$classes_vo.id eq $classes">
+			<option value="{$classes_vo.id}" selected="selected">{$classes_vo.name}</option>
+			<else />
+			<option value="{$classes_vo.id}">{$classes_vo.name}</option>
+			</if>
+			</volist>
+		</select></td>
+	</tr>
+	<tr>
+		<td width="10%">ID</td>
+		<td width="70%">文件列表</td>
+		<td width="20%">操作</td>
+	</tr>
+	<volist name="list" id="vo">
+	<tr>
+		<td>{$vo.id}</td>
+		<td class="td_left">{$vo.name}[{$vo.c_time}]</td>
+		<td><input type="button" name="update" id="update" value="更新"
+			onClick="window.location.href='__URL__/update/ID/{$vo.id}'">
+		<input type="submit" name="delete" id="delete" value="删除"
+			onClick="if(confirm('确定删除吗？')==false) return false;window.location.href='__URL__/download_delete/ID/{$vo.id}'"></td>
+	</tr>
+	</volist>
+	<tr>
+		<td colspan="3">{$page}</td>
+	</tr>
+
+</table>
+</div>
+</body>
+<script type="text/javascript">
+	$('#classes').change(function(){
+		window.location.href='__URL__/op/ID/'+this.value;
+	});
+</script>
+</html>

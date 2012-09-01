@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+<link type="text/css" rel="stylesheet" rev="stylesheet"
+	href="../Public/css/main.css" media="all" />
+</head>
+<body>
+<div class="all">
+<table id="main">
+	<tr>
+		<td colspan="4" class="title">账户管理</td>
+	</tr>
+
+	<tr>
+		<td>账户</td>
+		<td>密码</td>
+		<td>级别</td>
+		<td>操作</td>
+	</tr>
+
+	<iterate name="list" id="vo">
+	<tr id="{$vo.id}">
+		<td>{$vo.user}</td>
+		<td>**********</td>
+		<td><if condition="$vo.level eq 1">超级管理员<else />普通管理员</if></td>
+		<td><input id="hidden" type="hidden" value="{$vo.id}" /><input
+			type="button" name="update" title="{$vo.id}" class="show_update"
+			value="更新"><input type="button"
+			onclick="if(confirm('确定删除吗？')==false) return false;window.location.href='__APP__/Account/delete/ID/{$vo.id}'"
+			value="删除" /></td>
+	</tr>
+	</iterate>
+
+	<form action="__APP__/Account/add" name="form_add" method="post">
+	<tr>
+		<td><input name="user" type="text"></td>
+		<td><input name="password" type="password"></td>
+		<td><input name="level" type="radio" id="level_0" value="1">超级管理员
+		<input name="level" type="radio" id="level_1" value="2" checked>普通管理员</td>
+		<td><input type="submit" name="add" id="add" value="新增"></td>
+	</tr>
+	</form>
+</table>
+</div>
+<div class="hidden_div">
+<form action="__URL__/update" method="post">
+<table>
+	<tr>
+		<td colspan="2" class="title">账户更新</td>
+	</tr>
+	<tr>
+		<td>账户</td>
+		<td class="td_left"><input name="user_update" type="text"></td>
+	</tr>
+	<tr>
+		<td>密码</td>
+		<td class="td_left"><input name="password_update" type="password"></td>
+	</tr>
+	<tr>
+		<td>级别</td>
+		<td class="td_left"><input name="level_update" type="radio"
+			id="hidden_level_0" value="1">超级管理员 <input
+			name="level_update" type="radio" id="hidden_level_1" value="2">普通管理员</td>
+	</tr>
+	<tr>
+		<td colspan="2"><input name="hidden_update" id="hidden_update"
+			type="hidden" value="" /><input type="submit" name="update"
+			id="update" value="更新"><input name="exit" type="button"
+			value="取消" /></td>
+	</tr>
+</table>
+</form>
+</div>
+</body>
+<script type="text/javascript">
+$(".hidden_div").hide();
+$(".show_update").click(function(){
+	$(".hidden_div").show('fast');
+	var id = $(this).attr("title");
+	var elm = '#'+id;
+	$("input[name='user_update']").val($(elm+" td:nth-child(1)").text());//传入user
+	$("input[name='password_update']").val($(elm+" td:nth-child(2)").text());//传入password
+	if($(elm+" td:nth-child(3)").text() == '超级管理员')
+	{
+		$('#hidden_level_0').attr("checked","checked");
+		$('#hidden_level_1').removeAttr('checked');
+	}
+	else
+	{
+		$('#hidden_level_1').attr('checked','checked');
+		$('#hidden_level_0').removeAttr('checked');
+	}
+	$("input[name='hidden_update']").val(id);//更新的账户ID
+});
+
+$("input[name*='exit']").click(function(){
+	$(".hidden_div").hide('fast');
+});
+</script>
+</html>

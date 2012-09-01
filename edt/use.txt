@@ -1,0 +1,37 @@
+
+下载 KindEditor 最新版本。打开下载页面
+解压zip文件，将所有文件上传到您的网站程序目录下。例如：http://您的域名/editor/
+在需要显示编辑器的位置添加TEXTAREA输入框。
+id在当前页面必须是唯一的值，还有，在有些浏览器上不设宽度和高度可能显示有问题，所以最好设一下宽度和高度。宽度和高度可用inline样式设置，也可用编辑器初始化参数设置。
+在TEXTAREA里设置HTML内容即可实现编辑，在这里需要注意的是，如果从服务器端程序(ASP、PHP、ASP.NET等)直接显示内容，则必须转换HTML特殊字符(>,<,&,")。 具体请参考各语言目录下面的demo.xxx程序，目前支持ASP、ASP.NET、PHP、JSP。
+<textarea id="editor_id" name="content" style="width:700px;height:300px;">
+&lt;strong&gt;HTML内容&lt;/strong&gt;
+</textarea>
+在该HTML页面添加以下脚本。
+<script charset="utf-8" src="/editor/kindeditor.js"></script>
+<script>
+        KE.show({
+                id : 'editor_id'
+        });
+</script>
+注：KE.show的原理是先执行KE.init设置一些变量，等DOM全部创建以后才开始执行KE.create创建编辑器。 如果浏览器不触发DOMContentLoaded事件（例如：jQuery的$.ready，点击某个按钮，通过innerHTML插入HTML等），则不能使用KE.show，需要直接调用KE.init和KE.create。
+KE.init({
+        id : 'editor_id'
+});
+$.ready(function() {
+        KE.create('editor_id');
+});
+调用KE.show和KE.init时，除id之外还可以设置其它的参数，具体属性请参考编辑器初始化参数。
+取得编辑器的HTML内容。
+KindEditor的可视化操作在新创建的iframe上执行，代码模式下的textarea框也是新创建的，所以最后提交前需要将HTML数据同步到原来的textarea，KE.sync函数会完成这个动作。
+KindEditor在默认情况下自动寻找textarea所属的form元素，找到form后onsubmit事件里添加KE.sync函数，所以用form方式提交数据，不需要手动执行KE.sync函数。
+//取得HTML内容
+html = KE.html('editor_id');
+
+//同步数据后可以直接取得textarea的value
+KE.sync('editor_id');
+html = document.getElementById('editor_id').value;
+html = $('#editor_id').val(); //jQuery
+
+//设置HTML内容
+KE.html('editor_id', 'HTML内容');

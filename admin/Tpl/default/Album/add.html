@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <link href="../Public/css/main.css" rel="stylesheet" type="text/css" />
+        <script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+        <script type="text/javascript" src="__PUBLIC__/Js/jquery.blockUI.js"></script>
+    </head>
+
+    <body>
+        <div class="all">
+            <form action="__APP__/Album/pic_add" method="post" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">图片添加</td>
+                    </tr>
+                    <tr>
+                        <td>选择图片</td>
+                        <td class="td_left"><input name="my_file" type="file" size="50" /></td>
+                    </tr>
+                    <tr>
+                        <td>选择相册</td>
+                        <td class="td_left"><select name="select">
+                                <volist name="list" id="vo">
+                                    <option value="{$vo.id}">{$vo.name}</option>
+                                </volist>
+                            </select>*</td>
+                    </tr>
+                    <tr>
+                        <td>添加标签</td>
+                        <td class="td_left"><input type="text" name="name" />*</td>
+                    </tr>
+                    <tr>
+                        <td>上传人员</td>
+                        <td class="td_left"><input type="text" name="author" /></td>
+                    </tr>
+                    <tr>
+                        <td>关联新闻</td>
+                        <td class="td_left">
+                            <select id="ac_select">
+                                <option>新闻类别--></option>
+                                <volist name="ac_list" id="ac_vo">
+                                    <option value="{$ac_vo.id}">{$ac_vo.name}</option>
+                                </volist>
+                            </select>
+
+                            <select id="ar" name="ar">
+                                <option value="">---全部---</option>
+                            </select></td>
+                    </tr>
+                    <tr>
+                        <td>添加描述</td>
+                        <td class="td_left"><textarea name="intro" cols="50" rows="5"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="提交" id="submit_button" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <script type="text/javascript">
+            var _url = '__APP__/Album/getList/cls_id/';
+            $('#ac_select').change(function(){
+                //清空ar
+                $('#ar').empty();
+                $('#ar').append('<option value="">---全部---</option>');
+                var _go = _url+	$('#ac_select').val();
+                $.getJSON(
+                _go,
+                function(data){
+                    for(var i=0;i<data.length;i++){
+                        $('#ar').append('<option value="'+data[i].id+'">'+data[i].title+'</option>')
+                    }
+			
+                }
+            );
+            
+            });
+
+            $('#submit_button').click(function(){
+                $.blockUI({message: '<h1><img src="__PUBLIC__/Img/loading.gif" /> 正在上传图片，请稍等...</h1>'});
+            });
+        </script>
+    </body>
+</html>

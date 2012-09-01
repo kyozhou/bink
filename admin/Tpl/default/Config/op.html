@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+        <link type="text/css" href="../Public/css/main.css" rel="stylesheet" />
+        <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    </head>
+    <body>
+        <div class="all">
+            <table>
+                <tr>
+                    <td colspan="3" class="title">配置管理</td>
+                </tr>
+                <tr>
+                    <th width="200">名称</th>
+                    <th>值</th>
+                    <th width="200">操作</th>
+                </tr>
+                <volist name="config" id="row">
+                    <tr>
+                        <td>{$row['name']}</td>
+                        <td>{$row['words']}</td>
+                        <td>
+                            <input type="button" name="update" class="show_update" value="更新" onclick="update_panel('{$row['name']}')"/>
+                            <input type="button" onclick="if(confirm('确定删除吗？')==false) return false;window.location.href='__URL__/config_delete/ID/{$vo.id}'" value="删除" />
+                        </td>
+                    </tr>
+                </volist>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>{$pager}</td>
+                    <td><input type="button" id="button_add" value="新增" /></td>
+                </tr>
+            </table>
+        </div>
+        <div class="hidden_div">
+            <form id="fm" action="" method="post">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title"><label id='lb'></label></td>
+                    </tr>
+                    <tr>
+                        <td width="20%">名称</td>
+                        <td width="80%" class="td_left"><input name="name" type="text" id="config_name"/></td>
+                    </tr>
+                    <tr>
+                        <td width="20%">值</td>
+                        <td width="80%" class="td_left"><input name="words" size="70" type="text" id="config_words"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="sb" id="sb" value="提交"/>
+                            <input name="exit" type="button" value="取消" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <script type="text/javascript">
+            function update_panel(name){
+                $.getJSON('__URL__/get_config/name/'+name,function(json){
+                    if(json.error){
+                        alert(json.msg);
+                    }else{
+                        $('#lb').html('更新配置项目');
+                        $('#fm').attr('action','__URL__/config_update/ID/'+json.data.id);
+                        $('#config_name').val(json.data.name);
+                        $('#config_words').val(json.data.words);
+                        $('div.hidden_div').slideDown(100);
+                    }
+
+                });
+            }
+            $('#button_add').click(function(){
+                $('#lb').html('新增配置项目');
+                $('#fm').attr('action','__URL__/config_add');
+                $('#config_name').val('');
+                $('#config_words').val('');
+                $('div.hidden_div').slideDown(100);
+            });
+            $("input[name*='exit']").click(function(){
+                $(".hidden_div").slideUp(100);
+            });
+        </script>
+    </body>
+
+</html>

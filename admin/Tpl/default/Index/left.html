@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <script type="text/javascript" src="../Public/js/sdmenu.js"></script>
+        <link href="../Public/css/sdmenu.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            // <![CDATA[
+            var myMenu;
+            window.onload = function() {
+                myMenu = new SDMenu("my_menu");
+                myMenu.speed = 5; // Menu sliding speed (1 - 5 recomended)
+                myMenu.remember = true; // Store menu states (expanded or collapsed) in cookie and restore later
+                myMenu.oneSmOnly = true; // One expanded submenu at a time
+                myMenu.markCurrent = true; // Mark current link / page (link.href == location.href)
+                myMenu.init();
+                myMenu.collapseAll();
+            };
+            // ]]>
+        </script>
+    </head>
+
+    <body>
+        <div id="menu_head">后台管理</div>
+        <div style="float: left" id="my_menu" class="sdmenu">
+            <div><span>菜单编辑</span>
+                <a href="__APP__/Menu/mone" target="frameBord">一级菜单</a>
+                <a href="__APP__/Menu/mtwo" target="frameBord">二级菜单</a>
+            </div>
+            <div><span>文章管理</span>
+                <a href="__APP__/Article/add" target="frameBord">发布文章</a>
+                <a href="__APP__/Article/op" target="frameBord">文章操作</a>
+                <a href="__APP__/Article/classes" target="frameBord">类别管理</a>
+                <!--a href="__APP__/article/recycle" target="frameBord">垃圾箱</a-->
+            </div>
+            <div><span>下载管理</span>
+                <a href="__APP__/Download/add" target="frameBord">文件上传</a>
+                <a href="__APP__/Download/op" target="frameBord">文件操作</a>
+                <a href="__APP__/Download/classes" target="frameBord">上传类型</a>
+            </div>
+            <div><span>图片管理</span>
+                <a href="__APP__/Album/add" target="frameBord">图片添加</a>
+                <a href="__APP__/Album/op" target="frameBord">图片操作</a>
+                <a href="__APP__/Album/classes" target="frameBord">相册管理</a>
+            </div>
+            <div><span>其他管理</span>
+                <a href="__APP__/Message/op" target="frameBord">留言管理</a>
+                <a href="__APP__/Poll/op" target="frameBord">投票管理</a>
+            </div>
+            <div><span>系统设置</span>
+                <a href="__APP__/Template/front" target="frameBord">前台模板</a>
+                <a href="__APP__/Bulletin/op" target="frameBord">公告管理</a>
+                <a href="__APP__/Account/op" target="frameBord">账号管理</a>
+            </div>
+            <div><span>使用帮助</span> <a href="__APP__/Public/help" target="frameBord">使用帮助</a></div>
+        </div>
+    </body>
+</html>

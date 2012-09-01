@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+<link type="text/css" rel="stylesheet" rev="stylesheet"
+	href="../Public/css/main.css" media="all" />
+</head>
+<body>
+<div class="all">
+<table>
+	<tr>
+		<td colspan="3" class="title">下载类别管理</td>
+	</tr>
+	
+	<tr>
+		<td width="34%">下载类别</td>
+        <td width="32%">是否锁定</td>
+        <td width="34%">操作</td>
+	</tr>
+	
+	<iterate name="list" id="vo">
+	<tr id="{$vo.id}">
+		<td>{$vo.name}</td>
+		<td><if condition="$vo.is_lock eq 'y'">锁定<else />不锁定</if></td>
+		<td><input id="hidden" type="hidden" value="{$vo.id}" /><input
+			type="button" name="update" title="{$vo.id}" class="show_update"
+			value="更新"><input type="button"
+			onclick="if(confirm('确定删除吗？')==false) return false;window.location.href='__URL__/classes_delete/ID/{$vo.id}'" value="删除" /></td>
+	</tr>
+	</iterate>
+
+	<tr>
+	<form method="post" action="__URL__/classes_add">
+		<td><input name="name" type="text" /></td>
+        <td><input name="is_lock" type="radio" id="is_lock_0" value="y" />锁定
+		<input name="is_lock" type="radio" id="is_lock_1" value="n" checked>不锁定</td>
+        <td><input type="submit" name="insert" id="insert" value="新增"></td>
+	</form>
+	</tr>
+  
+</table>
+</div>
+
+<div class="hidden_div">
+<form action="__URL__/classes_update" method="post">
+<table>
+	<tr>
+		<td colspan="2" class="title">类别更新</td>
+	</tr>
+	<tr>
+		<td>名称</td>
+		<td class="td_left"><input name="name_update" type="text"></td>
+	</tr>
+	<tr>
+		<td>锁定</td>
+		<td class="td_left">
+		<input name="is_lock_update" type="radio" id="is_lock_update_0" value="y">锁定
+		<input name="is_lock_update" type="radio" id="is_lock_update_1" value="n">不锁定
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<input name="hidden_update" id="hidden_update" type="hidden" value="" />
+		<input type="submit" name="update" id="update" value="更新">
+		<input name="exit" type="button" value="取消" />
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+</body>
+<script type="text/javascript">
+$(".hidden_div").hide();
+$(".show_update").click(function(){
+	$(".hidden_div").show('fast');
+	var id = $(this).attr("title");
+	var elm = '#'+id;
+	$("input[name='name_update']").val($(elm+" td:nth-child(1)").text());//传入name
+	if($(elm+" td:nth-child(2)").text() == '锁定')
+	{
+		$('#is_lock_update_0').attr("checked","checked");
+		$('#is_lock_update_1').removeAttr('checked');
+	}
+	else
+	{
+		$('#is_lock_update_1').attr('checked','checked');
+		$('#is_lock_update_0').removeAttr('checked');
+	}
+	$("input[name='hidden_update']").val(id);//更新ID
+});
+
+$("input[name*='exit']").click(function(){
+	$(".hidden_div").hide('fast');
+});
+</script>
+</html>

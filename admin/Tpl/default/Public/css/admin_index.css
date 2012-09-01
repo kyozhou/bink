@@ -1,0 +1,143 @@
+html,body {
+	margin: 0px;
+	height: 100px;
+}
+
+#foot {
+	font-size: 10px;
+	text-decoration: none;
+	background-image: url(../img/admin_top_bk.jpg);
+	background-position: bottom;
+	height: 18px;
+	width: 100%;
+	text-align: center;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #0AF;
+	border-right-color: #0AF;
+	border-bottom-color: #0AF;
+	border-left-color: #0AF;
+}
+
+body {
+	font-size: 12px;
+	color: #333;
+	margin-top: 0px;
+	margin-left: 0px;
+}
+
+#left {
+	height: 100%;
+	width: 150px;
+	margin-top: 0px;
+	margin-left: 0px;
+	background-color: #CCC;
+}
+
+#divTop {
+	background-color: #FFF;
+	height: 48px;
+	width: 100%;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #0FAEFE;
+	background-image: url(../img/admin_top_bk.jpg);
+}
+
+#big_title {
+	margin-left: 10px;
+	font-size: 24px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-decoration: none;
+	color: #000;
+	float: left;
+	margin-bottom: 0px;
+	margin-top: 20px;
+}
+
+#big_title span {
+	font-weight: 900;
+	color: #0AF;
+	font-style: italic;
+	font-size: 16px;
+}
+
+#divTop img {
+	display: block;
+	float: left;
+}
+
+#main_menu {
+	height: 20px;
+	float: right;
+	margin-top: 30px;
+	width: 270px;
+}
+
+#main_menu li {
+	height: 20px;
+	float: left;
+	list-style-type: none;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+#main_menu ul li a {
+	color: #333;
+	text-decoration: underline;
+	font-size: 15px;
+	font-weight: 900;
+}
+
+/* CSS Document by Shaorui */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	overflow-x: hidden;
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-size: 10pt;
+	color: #333;
+	overflow: auto;
+	overflow-x: hidden;
+}
+
+a {
+	color: #0D324F;
+}
+
+h1 {
+	position: absolute;
+	width: 130px;
+	color: #525252;
+	font-size: 12pt;
+	left: 0;
+	border-bottom: 3px solid #525252;
+	padding-top: 10px;
+	padding-right: 0;
+	padding-bottom: 8px;
+	padding-left: 20px;
+}
+
+h2 {
+	background: #666;
+	font-size: 12px;
+	padding: 8px;
+	color: #FFF;
+}
+
+#frameBord {
+	border-left: 3px solid #666;
+}
+
+#divLeft {
+	
+}

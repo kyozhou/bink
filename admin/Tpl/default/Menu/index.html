@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+        <link type="text/css" href="../Public/css/main.css" rel="stylesheet" />
+        <script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+    </head>
+    <body>
+        <div class="all">
+            <table>
+                <tr>
+                    <td colspan="9" class="title">菜单编辑</td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="td_right">
+                        <select onchange="window.location.href='__ACTION__/classes/'+this.value;">
+                            <option value="" <empty name="cls_now">selected</empty>>--请选择菜单类型--</option>
+                            <volist name="menu_cls" id="row">
+                                <option value="{$row.id}" <if condition="$row.id eq $cls_now">selected</if>>{$row.name}</option>
+                            </volist>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th width="50">ID</th>
+                    <th width="50">排序</th>
+                    <th width="100">名称</th>
+                    <th>链接</th>
+                    <th width="80">打开方式</th>
+                    <th width="60">显示</th>
+                    <th width="80">类别</th>
+                    <th width="80">父菜单</th>
+                    <th width="200">操作</th>
+                </tr>
+                <volist name="menu" id="vo">
+                    <tr id="{$vo.id}">
+                        <td>{$vo.id}</td>
+                        <th>{$vo.indexnum}</th>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.href}</td>
+                        <td>{$vo.target}</td>
+                        <td>{$vo.isshow}</td>
+                        <td><a href="__ACTION__/classes/{$vo.cls_id}">{$vo.cls_name}</a></td>
+                        <td>{$vo.father_id}</td>
+                        <td>
+                            <input type="button" name="update" class="show_update" value="更新" onclick="update_menu({$vo.id})"/>
+                            <input type="button" onclick="if(confirm('将删除所有此菜单下的子菜单，确定删除吗？')==false) return false;window.location.href='__URL__/menu_delete/ID/{$vo.id}'" value="删除" />
+                        </td>
+                    </tr>
+                </volist>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="7">{$page}</td>
+                    <td><input type="button" class="show_update" id="button_add" value="新增" /></td>
+                </tr>
+            </table>
+        </div>
+        <div class="hidden_div">
+            <form id="fm" action="" method="post">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title"><label id='lb'></label></td>
+                    </tr>
+                    <tr>
+                        <td width="20%">菜单名</td>
+                        <td width="80%" class="td_left"><input name="name" type="text" id="menu_name"/></td>
+                    </tr>
+                    <tr>
+                        <td>链接</td>
+                        <td class="td_left">
+                            <input name="href" type="text" size="50" id="menu_href"/>
+                            <label class="tip">可使用相对地址（相对网站根目录）或绝对地址（带http头）</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>打开方式</td>
+                        <td class="td_left">
+                            <input name="target" type="radio" id="target_1" value="_self" checked="checked" /> 本窗口
+                            <input name="target" type="radio" id="target_2" value="_blank"/> 新窗口
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>是否显示</td>
+                        <td class="td_left">
+                            <input name="isshow" type="radio" value="Y" checked="checked" /> 是
+                            <input name="isshow" type="radio" value="N"/> 否
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>类别</td>
+                        <td class="td_left">
+                            <select name="classes">
+                                <option value="" >--请选择菜单类型--</option>
+                                <volist name="menu_cls" id="row">
+                                    <option value="{$row.id}" >{$row.name}</option>
+                                </volist>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>父菜单</td>
+                        <td class="td_left">
+                            <input name="father_id" type="text" size="5" class="text_center" id="menu_father_id"/>
+                            <label class="tip">上一级菜单的ID，没有（顶级）则为0</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>排序</td>
+                        <td class="td_left">
+                            <input name="indexnum" type="text" size="5" class="text_center" id="menu_indexnum"/>
+                            <label class="tip">优先值，值越小排越前（1比2前，a比b前）</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="sb" id="sb" value="提交"/>
+                            <input name="exit" type="button" value="取消" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <script type="text/javascript">
+            function update_menu(id){
+                $.getJSON('__URL__/get_menu/ID/'+id,function(json){
+                    if(json.error){
+                        alert('错误请求');
+                    }else{
+                        $('#lb').html('更新菜单');
+                        $('#fm').attr('action','__URL__/menu_update/ID/'+json.data.id);
+                        $('#menu_name').val(json.data.name);
+                        $('#menu_href').val(json.data.href);
+                        $('#menu_father_id').val(json.data.father_id);
+                        $('#menu_indexnum').val(json.data.indexnum);
+                        $('input[name=\'target\'][value=\''+json.data.target+'\']').attr('checked',true);
+                        $('input[name=\'isshow\'][value=\''+json.data.isshow+'\']').attr('checked',true);
+                        $('select[name=\'classes\'] option[value=\''+json.data.classes+'\']').attr('selected',true);
+                        $('div.hidden_div').slideDown(200);
+                    }
+                    
+                });
+            }
+            $('#button_add').click(function(){
+                $('#lb').html('新增菜单');
+                $('#fm').attr('action','__URL__/menu_add');
+                $('#menu_name').val('');
+                $('#menu_href').val('');
+                $('#menu_father_id').val('');
+                $('#menu_indexnum').val('0');
+                $('input[name=\'target\'][value=\'_self\']').attr('checked',true);
+                $('input[name=\'isshow\'][value=\'Y\']').attr('checked',true);
+                $('select[name=\'classes\'] option[value=\'\']').attr('selected',true);
+                $('div.hidden_div').slideDown(200);
+            });
+            $("input[name*='exit']").click(function(){
+                $(".hidden_div").slideUp(200);
+            });
+        </script>
+    </body>
+
+</html>

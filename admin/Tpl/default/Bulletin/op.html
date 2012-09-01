@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+<link type="text/css" rel="stylesheet" rev="stylesheet"
+	href="../Public/css/main.css" media="all" />
+</head>
+<body>
+<div class="all">
+<table id="main">
+	<tr>
+		<td colspan="3" class="title">公告管理</td>
+	</tr>
+
+	<tr>
+		<td>id</td>
+		<td>内容</td>
+		<td>操作</td>
+	</tr>
+
+	<iterate name="list" id="vo">
+	<tr id="{$vo.id}">
+		<td width="50">{$vo.id}</td>
+		<td class="td_left" >{$vo.content}</td>
+		<td width="200"><input id="hidden" type="hidden" value="{$vo.id}" /><input
+			type="button" name="update" title="{$vo.id}" class="show_update"
+			value="更新"><input type="button"
+			onclick="if(confirm('确定删除吗？')==false) return false;window.location.href='__APP__/Bulletin/delete/ID/{$vo.id}'"
+			value="删除" /></td>
+	</tr>
+	</iterate>
+
+	<Form action="__APP__/Bulletin/add" name="form_add" method="post">
+	<tr>
+		<td>&nbsp;</td>
+		<td class="td_left" width="733"><input name="content" type="text" size="100" width="100%"/></td>
+		<td><input type="submit" name="add" id="add" value="新增"></td>
+	</tr>
+	</form>
+</table>
+</div>
+<div class="hidden_div">
+<form action="__URL__/update" method="post">
+<table>
+	<tr>
+		<td colspan="2" class="title">公告更新</td>
+	</tr>
+	<tr>
+		<td>内容</td>
+		<td class="td_left"><input name="content_update" value="{$content}" size="100" width="100%"/></td>
+	</tr>
+
+	<tr>
+		<td colspan="2"><input name="hidden_update" id="hidden_update"
+			type="hidden" value="" /><input type="submit" name="update"
+			id="update" value="更新"><input name="exit" type="button"
+			value="取消" /></td>
+	</tr>
+</table>
+</form>
+</div>
+</body>
+<script type="text/javascript">
+$(".hidden_div").hide();
+$(".show_update").click(function(){
+	$(".hidden_div").show('fast');
+	var id = $(this).attr("title");
+	var elm = '#'+id;
+	$("textarea[name='content_update']").text($(elm+" td:nth-child(2)").text());//传入content
+	$("input[name='author_update']").val($(elm+" td:nth-child(3)").text());//传入author
+	$("input[name='hidden_update']").val(id);//更新的ID
+});
+
+$("input[name*='exit']").click(function(){
+	$(".hidden_div").hide('fast');
+});
+</script>
+</html>

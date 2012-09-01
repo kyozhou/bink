@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <link href="../Public/css/main.css" rel="stylesheet" type="text/css">
+        <script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+    </head>
+    <body>
+        <div class="all">
+            <form action="__URL__/message_delete_all" method="post" name="del_form">
+                <table>
+                    <tr>
+                        <td colspan="8" class="title">留言管理</td>
+                    </tr>
+
+                    <tr>
+                        <td width="5%"><input type="checkbox" name="check_all" id="check_all" /></td>
+                        <td width="50">是否显示</td>
+                        <td width="100">留言类别</td>
+                        <td width="100">留言标题</td>
+                        <td>留言者</td>
+                        <td width="600">内容</td>
+                        <td width="180">操作</td>
+                    </tr>
+                    <volist name="list" id="vo">
+                        <tr>
+                            <td><input type="checkbox" name="cb[]" id="cb" value="{$vo.id}" /></td>
+                            <td><input type="button" value='<if condition="$vo.is_show == 1">显示<else/>不显示</if>' onClick="window.location.href='__URL__/set_msg_show/ID/{$vo.id}'"/>  </td>
+                            <td>{$vo.cname}</td>
+                            <td> <a href="#" onClick="alert_msg_info('{$vo.id}')">{$vo.title}</a></td>
+                            <td>{$vo.author}</td>
+                            <td class="td_left">{$vo.content}<notempty name="vo.r_content"> ，<font color="red">回复内容：{$vo.r_content}</font></notempty></td>
+                            <td>
+                                <input type="button" class="reply" id ="reply_{$vo.id}" value="回复" />
+                                <input type="button" id="delete_button" value="删除" onClick="if(!confirm('确定删除吗？')) return false ;window.location.href='__URL__/message_delete/ID/{$vo.id}';"/>
+                            </td>
+                        </tr>
+                    </volist>
+                    <tr>
+                        <td><input name="sub" type="submit" class="button01" value="×" title="删除所选择"></td>
+                        <td colspan="6"><empty name="page">无数据</empty>{$page}</td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div class="hidden_div">
+            <form action="__URL__/message_add" method="post" name="form_add">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">留言详细信息</td>
+                    </tr>
+                    <tr>
+                        <td width="100">标题</td>
+                        <td class="td_left"><label id="title"></label></td>
+                    </tr>
+                    <tr>
+                        <td>留言者</td>
+                        <td class="td_left"><label id="title"></label></td>
+                    </tr>
+                    <tr>
+                        <td width="100">标题</td>
+                        <td class="td_left"><label id="title"></label></td>
+                    </tr>
+                    <tr>
+                        <td>留言者</td>
+                        <td class="td_left"><label id="title"></label></td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="2"><input type="button" value="关闭" name="exit"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div class="hidden_div" id="hd_reply">
+            <form action="__URL__/message_reply" method="post" name="form_add">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">回复</td>
+                    </tr>
+                    <tr>
+                        <td width="100">回复内容</td>
+                        <td class="td_left"><textarea name="content" cols="60" rows="8"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" value="提交" />
+                            <input type="hidden" value="" name="t_id" id="t_id"/>
+                            <input type="button" value="关闭" name="exit"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        
+
+        <script type="text/javascript">
+            $("#check_all").click(
+            function(){
+                if(this.checked){
+                    $("input[name='cb[]']").each(function(){this.checked=true;});
+                }else{
+                    $("input[name='cb[]']").each(function(){this.checked=false;});
+                }
+            }
+        );
+
+            $(".hidden_div").hide();
+            $(".reply").click(function(){
+                $tid = $(this).attr('id').replace('reply_','');
+                $('#t_id').val($tid);
+                $("#hd_reply").show('fast');
+            });
+
+            $("input[name*='exit']").click(function(){
+                $(".hidden_div").hide('fast');
+            });
+
+            function alert_msg_info(id){
+                
+            }
+        </script>
+    </body>
+</html>

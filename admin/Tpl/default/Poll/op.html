@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+        <link type="text/css" rel="stylesheet" rev="stylesheet"
+              href="../Public/css/main.css" media="all" />
+    </head>
+    <body>
+        <div class="all">
+            <table>
+                <tr>
+                    <td colspan="3" class="title">投票管理</td>
+                </tr>
+
+                <tr>
+                    <td width="34%">名称</td>
+                    <td width="32%">是否显示</td>
+                    <td width="34%">操作</td>
+                </tr>
+
+                <iterate name="poll_list" id="vo">
+                    <tr id="{$vo.id}">
+                        <td>{$vo.name}</td>
+                        <td><if condition="$vo.is_show eq '1'">显示<else />不显示</if></td>
+                    <td><input id="hidden" type="hidden" value="{$vo.id}" /><input
+                            type="button" name="update" title="{$vo.id}" class="show_update"
+                            value="更新">
+                        <input type="button"
+                            onclick="if(confirm('确定删除吗？')==false) return false;window.location.href='__URL__/poll_delete/ID/{$vo.id}'" value="删除" /></td>
+                    </tr>
+                </iterate>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><input type="button" name="insert" id="insert" value="新增"></td>
+                </tr>
+
+            </table>
+        </div>
+
+
+        <div class="hidden_div" id="hd_add">
+            <form action="__URL__/poll_add" method="post" >
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">新增投票</td>
+                    </tr>
+                    <tr>
+                        <td>名称</td>
+                        <td class="td_left"><input name="name" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>是否显示</td>
+                        <td class="td_left">
+                            <input name="is_show" type="radio" id="is_show_0" value="y" checked>显示
+                            <input name="is_show" type="radio" id="is_show_1" value="n">不显示
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案一</td>
+                        <td class="td_left">
+                            <input type="text" name="as1" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案二</td>
+                        <td class="td_left">
+                            <input type="text" name="as2" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案三</td>
+                        <td class="td_left">
+                            <input type="text" name="as3" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案四</td>
+                        <td class="td_left">
+                            <input type="text" name="as4" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案五</td>
+                        <td class="td_left">
+                            <input type="text" name="as5" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="add" id="add" value="新增">
+                            <input name="exit" type="button" value="取消" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="hidden_div" id="hd_update" >
+            <form action="__URL__/poll_update" method="post" >
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">类别更新</td>
+                    </tr>
+                    <tr>
+                        <td>名称</td>
+                        <td class="td_left"><input name="name" type="text" id="name_update" />*</td>
+                    </tr>
+                    <tr>
+                        <td>是否显示</td>
+                        <td class="td_left">
+                            <input name="is_show_update" type="radio" id="is_show_update_0" value="y">显示
+                            <input name="is_show_update" type="radio" id="is_show_update_1" value="n">不显示
+                            *
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案一</td>
+                        <td class="td_left">
+                            <input type="hidden" name="as1_id" id="as1_id" /><input type="text" name="as1" id="as1" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案二</td>
+                        <td class="td_left">
+                            <input type="hidden" name="as2_id" id="as2_id" /><input type="text" name="as2" id="as2" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案三</td>
+                        <td class="td_left">
+                            <input type="hidden" name="as3_id" id="as3_id" /><input type="text" name="as3" id="as3" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案四</td>
+                        <td class="td_left">
+                            <input type="hidden" name="as4_id" id="as4_id" /><input type="text" name="as4" id="as4" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>答案五</td>
+                        <td class="td_left">
+                            <input type="hidden" name="as5_id" id="as5_id" /><input type="text" name="as5" id="as5" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input name="hidden_update" id="hidden_update" type="hidden" value="" />
+                            <input type="submit" name="update" id="update" value="更新">
+                            <input name="exit" type="button" value="取消" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </body>
+    <script type="text/javascript">
+        $(".hidden_div").hide();
+        $(".show_update").click(function(){
+            var _url = '__URL__/get_poll_info/head_id/';
+            var _go = _url + $(this).attr("title");
+            $.getJSON(
+            _go,
+            function(data){
+                
+                if(data.name!=""){
+                    $('#name_update').val(data.name);
+                    //$("input[name='name_update']").val(data.name);
+                    if(data.is_show == "1")
+                    {
+                        $('#is_show_update_0').attr("checked","checked");
+                        $('#is_show_update_1').removeAttr('checked');
+                    }
+                    else
+                    {
+                        $('#is_show_update_1').attr('checked','checked');
+                        $('#is_show_update_0').removeAttr('checked');
+                    }
+                    $("input[name='hidden_update']").val(data.id);//更新ID
+                }
+                
+                if(eval(data).a.length>0){
+                    
+                    for(i=1;i<=eval(data).a.length;i++){
+                        $('#as'+i).val(data.a[i-1].name);
+                        $('#as'+i+"_id").val(data.a[i-1].id);
+                    }
+                }
+            }
+            );
+            $('#hd_update').show('fast');
+        });
+        $('#insert').click(function(){
+            $('#hd_add').show('fast');
+        });
+        $("input[name*='exit']").click(function(){
+            $(".hidden_div").hide('fast');
+            $('.hidden_div input[type="text"]').val('');
+            $('.hidden_div input[type="hidden"]').val('');
+        });
+
+    </script>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <link href="../Public/css/main.css" rel="stylesheet" type="text/css">
+        <script type='text/javascript' src='__PUBLIC__/Js/jquery.js'></script>
+    </head>
+    <body>
+        <div class="all">
+            <form action="__URL__/tpl_delete_all" method="post" name="del_form">
+                <table>
+                    <tr>
+                        <td colspan="3" class="title">前台模板管理</td>
+                    </tr>
+
+                    <tr>
+                        <td width="5%"><input type="checkbox" name="check_all" id="check_all" /></td>
+                        <td>模板名</td>
+                        <td width="300">操作</td>
+                    </tr>
+                    <volist name="list" id="vo">
+                        <tr>
+                            <td><input type="checkbox" name="cb[]" id="cb" value="{$vo.id}" /></td>
+                            <td class="td_left" id="name_{$vo.id}" align="center"><if condition="$vo.isdefault neq 'yes' ">{$vo.name}<else /><span style="font-size: 12;color:red;">{$vo.name}</span></if>
+                            </td>
+                            <td>
+                                <input type="hidden" id="is_default_{$vo.id}" value="{$vo.isdefault}" />
+                                <input type="button" name="tpl_update" id="tpl_update" value="更新" title="{$vo.id}" />
+                                <input type="button" id="delete_button" value="删除" onClick="if(!confirm('确定删除吗？')) return false ;window.location.href='__URL__/tpl_delete/ID/{$vo.id}';"/>
+                            </td>
+                        </tr>
+                    </volist>
+                    <tr>
+                        <td><input name="sub" type="submit" class="button01" value="×" title="删除所选择"></td>
+                        <td><empty name="page">无数据</empty>{$page}</td>
+                    <td><input type="button" name="tpl_add" id="tpl_add" value="新增" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div class="hidden_div" id="hidden_div_add" style="display: none; ">
+            <form action="__URL__/tpl_add" method="post" name="form_add">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">新增模板</td>
+                    </tr>
+                    <tr>
+                        <td width="100">模板名</td>
+                        <td class="td_left"><input type="text" name="name_add" />*</td>
+                    </tr>
+                    <tr>
+                        <td width="100">设置默认模板</td>
+                        <td class="td_left"><input type="radio" name="set_default" value="yes"/>是||<input type="radio" name="set_default" value="no" checked/>否</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value='提交' /><input type="button" value="取消" name="exit"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="hidden_div" id="hidden_div_update" style="display: none;">
+            <form action="__URL__/tpl_update" method="post" name="form_update">
+                <table>
+                    <tr>
+                        <td colspan="2" class="title">更新模板</td>
+                    </tr>
+                    <tr>
+                        <td width="100">模板名</td>
+                        <td class="td_left"><input type="text" name="name_update" id="name_update"/>*</td>
+                    </tr>
+                    <tr>
+                        <td width="100">设置默认模板</td>
+                        <td class="td_left"><input type="radio" name="set_default" id="set_default_0" value="yes"/>是||<input type="radio" name="set_default" id="set_default_1" value="no" />否</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="hidden" name="tpl_id" id="tpl_id"/><input type="submit" value='提交' /><input type="button" value="取消" name="exit"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <script type="text/javascript">
+            $("#check_all").click(
+            function(){
+                if(this.checked){
+                    $("input[name='cb[]']").each(function(){this.checked=true;});
+                }else{
+                    $("input[name='cb[]']").each(function(){this.checked=false;});
+                }
+            }
+        );
+            $("#tpl_add").click(function(){
+                $("#hidden_div_add").show('fast');
+            });
+
+            $("input[name*='exit']").click(function(){
+                $("#hidden_div_add").hide('fast');
+            });
+
+            $("input[name='tpl_update']").click(function(){
+                id = $(this).attr("title");
+                $("#tpl_id").val(id);
+                $("#name_update").val($("#name_"+id).text());
+                $("#hidden_div_update").show('fast');
+                if($("#is_default_"+id).val() == "yes"){
+                    $("#set_default_0").attr("checked",'checked');
+                }
+                else{
+                    $("#set_default_1").attr("checked",'checked');
+                }
+                
+            });
+
+            $("input[name*='exit']").click(function(){
+                $("#hidden_div_update").hide('fast');
+            });
+        </script>
+    </body>
+</html>
